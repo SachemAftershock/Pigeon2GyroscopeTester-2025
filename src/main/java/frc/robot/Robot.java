@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     configs.GyroTrim.GyroScalarY = 0;
     configs.GyroTrim.GyroScalarZ = 0;
     // We want the thermal comp and no-motion cal enabled, with the compass disabled for best behavior
-    configs.Pigeon2Features.DisableNoMotionCalibration = true; // false;  2/1/2025 this is more accurate for us.
+    configs.Pigeon2Features.DisableNoMotionCalibration = false;
     configs.Pigeon2Features.DisableTemperatureCompensation = false;
     configs.Pigeon2Features.EnableCompass = false;
     
