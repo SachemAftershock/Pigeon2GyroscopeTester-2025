@@ -32,10 +32,8 @@ public class Robot extends TimedRobot {
    // Configure the Pigeon2 for basic use
    Pigeon2Configuration configs = new Pigeon2Configuration();
 
-
-   // Get the yaw value
-   
-    // int _loopCount = 0;
+   private int m_HeartbeatCounter = 0;
+   private final int kUpdateLogHeartbeatInterval = 50;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -50,14 +48,14 @@ public class Robot extends TimedRobot {
     System.out.println("robotInit: Start Pigeon config.");
     // This Pigeon is mounted X-up, so we should mount-pose with Pitch at 90 degrees
     configs.MountPose.MountPoseYaw = 0;
-    configs.MountPose.MountPosePitch = 90;
+    configs.MountPose.MountPosePitch = 0;  // Must not be 90 to avoid gimble lock which messes up the yaw calculation.  If mount x-axis up then want to be 90 here. 
     configs.MountPose.MountPoseRoll = 0;
     // This Pigeon has no need to trim the gyro
     configs.GyroTrim.GyroScalarX = 0;
     configs.GyroTrim.GyroScalarY = 0;
     configs.GyroTrim.GyroScalarZ = 0;
     // We want the thermal comp and no-motion cal enabled, with the compass disabled for best behavior
-    configs.Pigeon2Features.DisableNoMotionCalibration = false;
+    configs.Pigeon2Features.DisableNoMotionCalibration = true; // false;  2/1/2025 this is more accurate for us.
     configs.Pigeon2Features.DisableTemperatureCompensation = false;
     configs.Pigeon2Features.EnableCompass = false;
     
@@ -67,7 +65,7 @@ public class Robot extends TimedRobot {
       // Set the yaw to 0 degrees for initial use
     pigeon.setYaw(0);
     System.out.println("robotInit: End Pigeon config.");
-
+    System.out.println("Start the test by Enable in Teleop.");
   }
 
   /**
@@ -125,7 +123,19 @@ public class Robot extends TimedRobot {
     double roll = pigeon.getRoll().getValueAsDouble();
 
     // Print the yaw value
-    System.out.println("Yaw: " + yaw + "  Pitch: " + pitch + "  Roll: " + roll);
+    if (m_HeartbeatCounter++ % kUpdateLogHeartbeatInterval == 0) { 
+      int seconds = (m_HeartbeatCounter / kUpdateLogHeartbeatInterval);
+      System.out.println(
+        "Seconds: " + seconds + 
+        " Yaw: " + yaw + 
+        "  Pitch: " + pitch + 
+        "  Roll: " + roll);
+
+        // "Seconds: " + String.format("%005d",seconds)  + 
+        // " Yaw: " + String.format("%5.3f",yaw) + 
+        // "  Pitch: " + String.format("%5.3f",pitch) + 
+        // "  Roll: " + String.format("%5.3",roll));
+    }
   }
 
   /** This function is called once when the robot is disabled. */
