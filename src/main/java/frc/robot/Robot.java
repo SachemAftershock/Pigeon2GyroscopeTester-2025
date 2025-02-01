@@ -46,9 +46,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     System.out.println("robotInit: Start Pigeon config.");
-    // This Pigeon is mounted X-up, so we should mount-pose with Pitch at 90 degrees
+    
     configs.MountPose.MountPoseYaw = 0;
-    configs.MountPose.MountPosePitch = 0;  // Must not be 90 to avoid gimble lock which messes up the yaw calculation.  If mount x-axis up then want to be 90 here. 
+    //configs.MountPose.MountPosePitch = 90;  // Use 90 if Pigeon is mounted X-up, so we should mount-pose with Pitch at 90 degrees- Not true
+    configs.MountPose.MountPosePitch = 0;  // Must not be 90 to avoid gimble lock which messes up the yaw calculation. We have pigeon flat (z-up), 
+                                           // so set to zeroi.  If mount x-axis up then want to be 90 here. 
     configs.MountPose.MountPoseRoll = 0;
     // This Pigeon has no need to trim the gyro
     configs.GyroTrim.GyroScalarX = 0;
